@@ -1,17 +1,4 @@
-console.clear();
-
-const teclado = require("prompt-sync")();
-
-let entrada: string;
-let base: number;
-
-let baseFinal: number;
-
-entrada = teclado(`Digite o número: `);
-base = parseInt(teclado(`Digite a base: `));
-baseFinal = parseInt(teclado(`Digite a base deseja para passar o seu número `));
-
-function transformarDecimal(entrada: string, base: number): number {
+export function transformarDecimal(entrada: string, base: number): number {
     let numerosArray: number[] = [];
     let decimal: number = 0;
     let numero: number;
@@ -69,9 +56,5 @@ function transformarDecimal(entrada: string, base: number): number {
         return decimal;
     }
 }
-
-let resultado = transformarDecimal(entrada, base);
-
-console.log(resultado);
 
 
