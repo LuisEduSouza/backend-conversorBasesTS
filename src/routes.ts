@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from "express";
-import { transformarDecimal } from "./services/conversor";
+import { transformarDecimal, transformarBaseFinal } from "./services/conversor";
 
 const router = Router();
 
@@ -8,11 +8,25 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.post("/converter", (req: Request, res: Response) => {
-    const { entrada, base } = req.body;
+    try {
+        const { entrada, base, baseFinal } = req.body;
 
-    const resultado = transformarDecimal(entrada, base);
+        const decimal: number = transformarDecimal(entrada, base);
 
-    res.json({ decimal: resultado });
+        if (baseFinal < 10 || baseFinal === 16) {
+            const resultado: number[] | string[] = transformarBaseFinal(decimal, baseFinal);
+            return res.status(200).json(resultado);
+        }
+        else if (baseFinal === 10) {
+            return res.status(200).json(decimal);
+        }
+        else{
+            return res.status(200).json({ mensagem: "Não há base disponível"});
+        }
+
+    } catch (error) {
+        return res.status(400).json({ mensagem: "Não foi possível fazer a conversão" });
+    }
 });
 
 export { router };
