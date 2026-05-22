@@ -1,6 +1,6 @@
 export function transformarDecimal(entrada: string, base: number): number {
     let numerosArray: number[] = [];
-    let decimal: number = 0;
+    let valorDecimal: number = 0;
     let numero: number;
 
     if (base != 10) {
@@ -51,22 +51,20 @@ export function transformarDecimal(entrada: string, base: number): number {
         let valorPosicional: number[] = [];
 
         for (let i = 0; i < numerosArray.length; i++) {
-            let expoente: number;
-            expoente = Math.pow(base, i);
-            valorPosicional[i] = numerosArray[i]! * expoente;
-            decimal += valorPosicional[i]!;
+            valorPosicional[i] = numerosArray[i]! * Math.pow(base, i);
+            valorDecimal += valorPosicional[i]!;
         }
 
-        return decimal;
+        return valorDecimal;
     } else if (base == 10) {
-        decimal = parseInt(entrada);
-        return decimal;
+        valorDecimal = parseInt(entrada);
+        return valorDecimal;
     } else {
         throw new Error("Base não suportada");
     }
 }
 
-export function transformarBaseFinal(decimal: number, baseFinal: number): number[] | string[] {
+export function transformarBaseFinal(valorDecimal: number, baseFinal: number): number[] | string[] {
     let numero: number[] = [];
     let hexadecimal: string[] = [];
     let resto: number;
@@ -74,10 +72,10 @@ export function transformarBaseFinal(decimal: number, baseFinal: number): number
     if (baseFinal < 10) {
         let numeroFinal: number[] = [];
         do {
-            resto = decimal % baseFinal;
+            resto = valorDecimal % baseFinal;
             numero.push(resto);
-            decimal = Math.floor(decimal / baseFinal);
-        } while (decimal != 0);
+            valorDecimal = Math.floor(valorDecimal / baseFinal);
+        } while (valorDecimal != 0);
 
         for (let i = numero.length - 1; i >= 0; i--) {
             numeroFinal.push(numero[i]);
@@ -89,7 +87,7 @@ export function transformarBaseFinal(decimal: number, baseFinal: number): number
     else if (baseFinal == 16) {
         let hexadecimalFinal: string[] = [];
         do {
-            resto = decimal % baseFinal;
+            resto = valorDecimal % baseFinal;
             switch (resto) {
                 case 10:
                     hexadecimal.push("A");
@@ -112,8 +110,8 @@ export function transformarBaseFinal(decimal: number, baseFinal: number): number
                 default:
                     hexadecimal.push(`${resto}`);
             }
-            decimal = Math.floor(decimal / baseFinal);
-        } while (decimal != 0);
+            valorDecimal = Math.floor(valorDecimal / baseFinal);
+        } while (valorDecimal != 0);
 
         for (let i = hexadecimal.length - 1; i >= 0; i--) {
             hexadecimalFinal.push(hexadecimal[i]);
