@@ -9,18 +9,14 @@ router.get("/", (req: Request, res: Response) => {
 
 router.post("/converter", (req: Request, res: Response) => {
     try {
-        const { entrada, base, baseFinal } = req.body;
+        const { entrada, baseOrigem, baseFinal } = req.body;
 
-        const decimal: number = transformarDecimal(entrada, base);
+        const decimal: number = transformarDecimal(entrada, baseOrigem);
 
-        if (baseFinal < 10 || baseFinal === 16) {
-            const resultado: number[] | string[] = transformarBaseFinal(decimal, baseFinal);
+        if ((baseFinal >= 2 && baseFinal <= 10) || baseFinal === 16) {
+            const resultado = transformarBaseFinal(decimal, baseFinal);
             return res.status(200).json(resultado);
-        }
-        else if (baseFinal === 10) {
-            return res.status(200).json(decimal);
-        }
-        else{
+        } else{
             return res.status(200).json({ mensagem: "Não há base disponível"});
         }
 
